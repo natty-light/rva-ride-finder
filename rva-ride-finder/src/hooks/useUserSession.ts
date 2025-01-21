@@ -1,21 +1,20 @@
 import { onAuthStateChanged } from "@/lib/firebase/auth";
 import { firebaseConfig } from "@/lib/firebase/config";
 import { useAuthStore } from "@/stores/auth";
-import { User } from "firebase/auth";
+import type { Nullable } from "@/types/utility";
+import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const useUserSession = (initialUser: User) => {
-
-
+const useUserSession = (initialUser: Nullable<User>) => {
   const { user, setUser } = useAuthStore((state) => state);
-  const router = useRouter();
 
-  useEffect(() => setUser(initialUser))
+  const router = useRouter();
 
   // Register the service worker that sends auth state back to server
   // The service worker is built with npm run build-service-worker
   useEffect(() => {
+    setUser(initialUser);
     if ("serviceWorker" in navigator) {
       const serializedFirebaseConfig = encodeURIComponent(JSON.stringify(firebaseConfig));
       const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`
@@ -32,13 +31,11 @@ const useUserSession = (initialUser: User) => {
     })
 
     return () => unsubscribe()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     onAuthStateChanged((authUser) => {
-      if (user === undefined) {
+      if (!user) {
         return
       }
 
@@ -49,8 +46,6 @@ const useUserSession = (initialUser: User) => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
-
-  return user;
 }
 
 export default useUserSession; 
