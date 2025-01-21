@@ -11,10 +11,9 @@ const useUserSession = (initialUser: Nullable<User>) => {
 
   const router = useRouter();
 
-  // Register the service worker that sends auth state back to server
-  // The service worker is built with npm run build-service-worker
+  useEffect(() => setUser(initialUser), []);
+
   useEffect(() => {
-    setUser(initialUser);
     if ("serviceWorker" in navigator) {
       const serializedFirebaseConfig = encodeURIComponent(JSON.stringify(firebaseConfig));
       const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`

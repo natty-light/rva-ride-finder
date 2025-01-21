@@ -4,7 +4,6 @@ import { signInWithGoogle, signOut } from "@/lib/firebase/auth";
 import { useAuthStore } from "@/stores/auth";
 import type { Nullable } from "@/types/utility";
 import type { User } from "firebase/auth";
-import Image from "next/image";
 import Link from "next/link";
 import type { FC, MouseEvent } from "react";
 
@@ -35,7 +34,6 @@ const Header: FC<HeaderProps> = ({ initialUser }) => {
         <>
           <div className="profile">
             <p>
-              <Image className="profileImage" src={user.photoURL ?? ''} alt={user.email ?? ''} />
               {user.displayName}
             </p>
 
