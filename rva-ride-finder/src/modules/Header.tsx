@@ -8,6 +8,7 @@ import Link from "next/link";
 import type { FC, MouseEvent } from "react";
 import useDrawer from "@/hooks/useDrawer";
 import ProfileDrawer from "./ProfileDrawer";
+import { Routes } from "@/routes";
 
 type HeaderProps = {
   initialUser: Nullable<User>;
@@ -35,7 +36,7 @@ const Header: FC<HeaderProps> = ({ initialUser }) => {
 
   return (
     <header className="flex flex-row h-fit m-2">
-      <Link href="/" className="font-bold">
+      <Link href={Routes.Feed} className="font-bold">
         RVA RIDE FINDER
       </Link>
       <ProfileDrawer onClose={closeProfileDrawer} isOpen={isOpenProfileDrawer} handleSignOut={handleSignOut} />
