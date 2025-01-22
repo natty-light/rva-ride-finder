@@ -1,5 +1,5 @@
 import AuthServiceWorker from "@/components/AuthServiceWorker"
-import Header from "@/components/Header";
+import Header from "@/modules/Header";
 import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import { ReactNode } from "react";
 

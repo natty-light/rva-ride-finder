@@ -6,6 +6,8 @@ import type { Nullable } from "@/types/utility";
 import type { User } from "firebase/auth";
 import Link from "next/link";
 import type { FC, MouseEvent } from "react";
+import useDrawer from "@/hooks/useDrawer";
+import ProfileDrawer from "./ProfileDrawer";
 
 type HeaderProps = {
   initialUser: Nullable<User>;
@@ -25,39 +27,34 @@ const Header: FC<HeaderProps> = ({ initialUser }) => {
     signInWithGoogle();
   };
 
+  const {
+    isOpen: isOpenProfileDrawer,
+    close: closeProfileDrawer,
+    open: openProfileDrawer
+  } = useDrawer();
+
   return (
-    <header>
+    <header className="flex flex-row h-fit m-2">
       <Link href="/" className="font-bold">
         RVA RIDE FINDER
       </Link>
-      {!!user ? (
-        <>
-          <div className="profile">
+      <ProfileDrawer onClose={closeProfileDrawer} isOpen={isOpenProfileDrawer} handleSignOut={handleSignOut} />
+      <div className="flex ml-auto border-red-500 border-2" onClick={openProfileDrawer}>
+        {!!user ? (
+          <div>
             <p>
               {user.displayName}
             </p>
-
-            <div className="menu">
-              ...
-              <ul>
-                <li>{user.displayName}</li>
-                <li>
-                  <a href="#" onClick={handleSignOut}>
-                    Sign Out
-                  </a>
-                </li>
-              </ul>
-            </div>
           </div>
-        </>
-      ) : (
-        <div className="">
-          <a href="#" onClick={handleSignIn}>
-            Sign In with Google
-          </a>
-        </div>
-      )}
-    </header>
+        ) : (
+          <div>
+            <a href="#" onClick={handleSignIn}>
+              Sign In with Google
+            </a>
+          </div>
+        )}
+      </div>
+    </header >
   );
 }
 

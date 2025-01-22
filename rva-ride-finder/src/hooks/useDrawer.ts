@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const useDrawer = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const open = useCallback(() => setIsOpen(true), []);
+  const close = useCallback(() => setIsOpen(false), []);
 
   return {
     isOpen,
     open,
-    close
-  }
-}
+    close,
+  };
+};
 
 export default useDrawer;
