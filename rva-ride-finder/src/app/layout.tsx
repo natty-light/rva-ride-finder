@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import { ReactNode } from "react";
 
+import '@/styles/globals.css'
+
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const { currentUser } = await getAuthenticatedAppForUser();
   return (

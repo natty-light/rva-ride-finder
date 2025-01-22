@@ -47,8 +47,6 @@ const AuthServiceWorker: FC = () => {
 
 
   return null;
-
-
 }
 
 export default AuthServiceWorker;
