@@ -1,7 +1,7 @@
-import Ride from "@/components/Ride";
-import { RideType } from "@/types/ride";
-import { Nullable } from "@/types/utility";
-import { FC, useState, useEffect, useRef } from "react";
+import Ride from "@/modules/Ride";
+import type { RideType } from "@/types/ride";
+import type { Nullable } from "@/types/utility";
+import { type FC, useState, useEffect, useRef } from "react";
 
 const mockRides: RideType[] = [
   {

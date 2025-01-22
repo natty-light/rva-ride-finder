@@ -39,7 +39,7 @@ const Header: FC<HeaderProps> = ({ initialUser }) => {
         RVA RIDE FINDER
       </Link>
       <ProfileDrawer onClose={closeProfileDrawer} isOpen={isOpenProfileDrawer} handleSignOut={handleSignOut} />
-      <div className="flex ml-auto border-red-500 border-2" onClick={openProfileDrawer}>
+      <div className="flex ml-auto" onClick={user ? openProfileDrawer : handleSignIn}>
         {!!user ? (
           <div>
             <p>
@@ -48,7 +48,7 @@ const Header: FC<HeaderProps> = ({ initialUser }) => {
           </div>
         ) : (
           <div>
-            <a href="#" onClick={handleSignIn}>
+            <a href="#">
               Sign In with Google
             </a>
           </div>
