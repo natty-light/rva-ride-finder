@@ -43,4 +43,4 @@ next-env.d.ts
 
 .env
 
-/postgres_data
+/postgres-data
