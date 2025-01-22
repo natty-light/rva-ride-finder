@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ride {
+  id          Int              @id @default(autoincrement())
+  host        String           @db.VarChar(255)
+  title       String           @db.VarChar(255)
+  description String           @db.VarChar(2000)
+  distance    Float            @db.DoublePrecision
+  startDate   DateTime         @db.Date
+  category    RideCategories   @default(Road)
+  difficulty  RideDifficulties @default(Green)
+  isDrop      Boolean          @default(false)
+  user        User             @relation(fields: [userId], references: [id])
+  userId      Int
+  route       Route            @relation(fields: [routeId], references: [id])
+  routeId     Int
+}
+
+enum RideCategories {
+  Road
+  Gravel
+  Mountain
+  Trail
+}
+
+enum RideDifficulties {
+  Red
+  Yellow
+  Green
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  uid   String @db.VarChar(255)
+  rides Ride[] // Updated to allow multiple rides for a user
+}
+
+model Route {
+  id    Int    @id @default(autoincrement())
+  rides Ride[] // Updated to allow multiple rides for a route
+}

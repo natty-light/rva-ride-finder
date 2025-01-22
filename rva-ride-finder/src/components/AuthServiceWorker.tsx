@@ -1,13 +1,22 @@
 'use client';
 import { onAuthStateChanged } from "@/lib/firebase/auth";
 import { firebaseConfig } from "@/lib/firebase/config";
+import { ApiRoutes } from "@/routes";
 import { useAuthStore } from "@/stores/auth";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { type FC, useEffect } from "react";
+import { useMutation } from "react-query";
 
 const AuthServiceWorker: FC = () => {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
+
+  const mutation = useMutation({
+    mutationFn: (req: { uid: string }) => {
+      return axios.post(ApiRoutes.RegisterUser, req)
+    }
+  })
 
   const router = useRouter();
 
@@ -33,9 +42,11 @@ const AuthServiceWorker: FC = () => {
 
   useEffect(() => {
     onAuthStateChanged((authUser) => {
-      if (user === undefined) {
+      if (!user) {
         return
       }
+
+      mutation.mutate({ uid: user.uid })
 
       // refresh when user changed to ease testing
       if (user?.email !== authUser?.email) {
