@@ -1,13 +1,14 @@
 'use client';
 
-import { NextPage } from "next";
+import Feed from "@/modules/Feed";
+import type { NextPage } from "next";
 
 const Home: NextPage = () => {
-    return (
-        <div>
-
-        </div>
-    )
+  return (
+    <div>
+      <Feed />
+    </div>
+  )
 }
 
 export default Home;
