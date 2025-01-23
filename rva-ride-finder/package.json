@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "yarn build-service-worker && next build",
     "build-service-worker": "npx esbuild auth-service-worker.js --bundle --outfile=public/auth-service-worker.js",
     "start": "next start",
@@ -18,7 +18,7 @@
     "firebase": "^11.2.0",
     "firebase-admin": "^13.0.2",
     "formik": "^2.4.6",
-    "next": "15.1.5",
+    "next": "^15.1.6",
     "pg": "^8.13.1",
     "prisma": "^6.2.1",
     "react": "^19.0.0",

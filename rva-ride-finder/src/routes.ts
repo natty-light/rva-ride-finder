@@ -1,6 +1,7 @@
 export enum Routes {
   Feed = '/',
   CreateRide = '/create-ride',
+  Ride = '/ride/[id]'
 }
 
 export enum ApiRoutes {

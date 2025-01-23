@@ -2,11 +2,12 @@
 
 import LabelInput from "@/components/form/LabelInput";
 import useFetchers from "@/hooks/useFetchers";
-import { ApiRoutes } from "@/routes";
+import { ApiRoutes, Routes } from "@/routes";
 import { useAuthStore } from "@/stores/auth";
 import { Ride, RideCategories, RideDifficulties } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import type { NextPage } from "next";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useMutation } from "react-query";
 
@@ -15,12 +16,13 @@ type FormRide = Omit<Ride, 'userId' | 'id' | 'routeId'>
 const CreateRide: NextPage = () => {
 
   const user = useAuthStore((state) => state.user);
+  const router = useRouter();
 
   const { post } = useFetchers();
 
   const mutation = useMutation({
     mutationFn: (ride: FormRide) => {
-      return post<FormRide, { rideId: number }>(ApiRoutes.CreateRide, ride);
+      return post<FormRide, { id: number }>(ApiRoutes.CreateRide, ride);
     }
   });
 
@@ -36,7 +38,16 @@ const CreateRide: NextPage = () => {
   }), [user]);
 
   const handleSubmit = async (r: FormRide) => {
-    const creationResponse = mutation.mutate(r);
+    mutation.mutate(r, {
+      onSuccess: (data) => {
+        const { id } = data?.data ?? {};
+        if (!id) {
+          router.push(Routes.Feed);
+        }
+        router.push(Routes.Ride.replace('[id]', `${id}`));
+      }
+    });
+
   };
 
   const categoryOptions = Object.values(RideCategories).map((v) => ({
