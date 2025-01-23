@@ -1,9 +1,8 @@
-import useFetchers from "@/hooks/useFetchers";
 import Ride from "@/modules/Ride";
 import { ApiRoutes } from "@/routes";
-import { useAuthStore } from "@/stores/auth";
 import type { Nullable } from "@/types/utility";
 import { Ride as RideType } from "@prisma/client";
+import axios from "axios";
 import { type FC, useState, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "react-query";
 
@@ -18,16 +17,14 @@ const Feed: FC = () => {
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<Nullable<HTMLDivElement>>(null);
 
-  const isSignedIn = useAuthStore((state) => state.isSignedIn);
-
-  const { get } = useFetchers();
-
   const query = useQuery({
     queryKey: ['afterId', { afterId, }],
     queryFn: async ({ queryKey }) => {
       const [_key, { afterId }] = queryKey as [string, { afterId: number }];
-      const response = await get<GetRidesResponse>(ApiRoutes.GetRides, {
-        afterId
+      const response = await axios.get<GetRidesResponse>(ApiRoutes.GetRides, {
+        params: {
+          afterId
+        }
       });
 
       if (!response) {
@@ -70,7 +67,7 @@ const Feed: FC = () => {
   }, []);
 
   const loadMoreRides = useCallback(() => {
-    if (loading && !isSignedIn) {
+    if (loading) {
       return;
     }
     setLoading(true);
@@ -79,13 +76,7 @@ const Feed: FC = () => {
     query.refetch({
       queryKey: ['afterId', { afterId }]
     });
-  }, [query, afterId, loading, isSignedIn]);
-
-  useEffect(() => {
-    if (isSignedIn && !rides.length) {
-      loadMoreRides();
-    }
-  }, [isSignedIn, rides]);
+  }, [query, afterId, loading]);
 
   return (
     <div className="w-full flex items-center justify-center h-screen">

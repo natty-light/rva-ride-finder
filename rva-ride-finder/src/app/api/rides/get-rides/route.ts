@@ -1,15 +1,9 @@
 import prisma from "@/db/datasource";
-import validateToken from "@/lib/auth/validateToken";
 import { Ride } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const validationResult = await validateToken(req);
-    if (!validationResult) {
-      return NextResponse.json({ message: 'unauthorized' }, { status: 401 });
-    }
-
     const afterId = req.nextUrl.searchParams.get('afterId');
 
     let rides: Ride[] = [];
