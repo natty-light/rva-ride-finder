@@ -1,6 +1,6 @@
 'use client';
 
-import AuthServiceWorker from "@/components/AuthServiceWorker";
+import AuthServiceWorker from "@/modules/AuthServiceWorker";
 import type { FC, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
