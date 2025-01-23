@@ -6,5 +6,6 @@ export enum Routes {
 export enum ApiRoutes {
   CreateRide = '/api/rides/create-ride',
   RegisterUser = '/api/users/register-user',
-  GetRides = '/api/rides/get-rides'
+  GetRides = '/api/rides/get-rides',
+  GetRide = '/api/rides/get-ride'
 }
