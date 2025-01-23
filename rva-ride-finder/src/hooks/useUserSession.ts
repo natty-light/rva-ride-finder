@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const useUserSession = (initialUser: Nullable<User>) => {
-  const { user, setUser } = useAuthStore((state) => state);
+  const { user, setUser, setIsSignedIn } = useAuthStore((state) => state);
 
   const router = useRouter();
 
@@ -19,8 +19,7 @@ const useUserSession = (initialUser: Nullable<User>) => {
       const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`;
 
       navigator.serviceWorker
-        .register(serviceWorkerUrl)
-        .then((registration) => console.log("scope is: ", registration.scope));
+        .register(serviceWorkerUrl);
     }
   }, []);
 
@@ -37,6 +36,7 @@ const useUserSession = (initialUser: Nullable<User>) => {
       if (!user) {
         return;
       }
+      setIsSignedIn(true);
 
       // refresh when user changed to ease testing
       if (user?.email !== authUser?.email) {

@@ -1,55 +1,48 @@
+import useFetchers from "@/hooks/useFetchers";
 import Ride from "@/modules/Ride";
-import type { RideType } from "@/types/ride";
+import { ApiRoutes } from "@/routes";
+import { useAuthStore } from "@/stores/auth";
 import type { Nullable } from "@/types/utility";
-import { type FC, useState, useEffect, useRef } from "react";
+import { Ride as RideType } from "@prisma/client";
+import { type FC, useState, useEffect, useRef, useCallback } from "react";
+import { useQuery } from "react-query";
 
-const mockRides: RideType[] = [
-  {
-    id: 0,
-    host: "Alice",
-    title: "Morning Ride",
-    description: "A scenic morning ride through the hills.",
-    distance: 15.3,
-    startDate: "2025-01-23T07:30:00Z",
-  },
-  {
-    id: 1,
-    host: "Bob",
-    title: "City Tour",
-    description: "Exploring the city on a leisurely ride.",
-    distance: 10.2,
-    startDate: "2025-01-23T09:00:00Z",
-  },
-  {
-    id: 2,
-    host: "Charlie",
-    title: "Mountain Trail",
-    description: "A challenging ride through rugged mountain paths.",
-    distance: 25.8,
-    startDate: "2025-01-23T12:00:00Z",
-  },
-  {
-    id: 3,
-    host: "Dana",
-    title: "Park Loop",
-    description: "A relaxing ride around the park on smooth trails.",
-    distance: 8.1,
-    startDate: "2025-01-23T15:30:00Z",
-  },
-  {
-    id: 4,
-    host: "Eve",
-    title: "Sunset Cruise",
-    description: "A peaceful ride along the lake during sunset.",
-    distance: 12.7,
-    startDate: "2025-01-23T18:00:00Z",
-  },
-];
+type GetRidesResponse = {
+  rides: RideType[];
+  afterId: number;
+}
 
 const Feed: FC = () => {
-  const [rides, setRides] = useState<RideType[]>(mockRides);
+  const [rides, setRides] = useState<RideType[]>([]);
+  const [afterId, setAfterId] = useState<Nullable<number>>(null);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<Nullable<HTMLDivElement>>(null);
+
+  const isSignedIn = useAuthStore((state) => state.isSignedIn);
+
+  const { get } = useFetchers();
+
+  const query = useQuery({
+    queryKey: ['afterId', { afterId, }],
+    queryFn: async ({ queryKey }) => {
+      const [_key, { afterId }] = queryKey as [string, { afterId: number }];
+      const response = await get<GetRidesResponse>(ApiRoutes.GetRides, {
+        afterId
+      });
+
+      if (!response) {
+        return;
+      }
+
+      const { rides: newRides, afterId: newAfterId } = response.data;
+
+      setRides((previousRides) => [...previousRides, ...newRides]);
+      if (afterId) {
+        setAfterId(newAfterId);
+      }
+      setLoading(false);
+    }
+  });
 
   useEffect(() => {
     // Scroll listener for infinite scrolling
@@ -76,16 +69,23 @@ const Feed: FC = () => {
     };
   }, []);
 
-  const loadMoreRides = () => {
-    if (loading) return;
+  const loadMoreRides = useCallback(() => {
+    if (loading && !isSignedIn) {
+      return;
+    }
     setLoading(true);
 
-    // Simulate an API call for paginated data
-    setTimeout(() => {
-      setRides((prevRides) => [...prevRides, ...mockRides]);
-      setLoading(false);
-    }, 1000);
-  };
+
+    query.refetch({
+      queryKey: ['afterId', { afterId }]
+    });
+  }, [query, afterId, loading, isSignedIn]);
+
+  useEffect(() => {
+    if (isSignedIn && !rides.length) {
+      loadMoreRides();
+    }
+  }, [isSignedIn, rides]);
 
   return (
     <div className="w-full flex items-center justify-center h-screen">
