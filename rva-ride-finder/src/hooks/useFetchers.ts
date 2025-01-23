@@ -8,6 +8,10 @@ const useFetchers = () => {
   const post = useCallback(async <TData, TResponse>(url: string, data: TData) => {
     const idToken = await user?.getIdToken();
 
+    if (!idToken) {
+      return;
+    }
+
     return axios.post<TResponse>(url, data, {
       headers: {
         Authorization: `Bearer ${idToken}`
@@ -17,6 +21,10 @@ const useFetchers = () => {
 
   const get = useCallback(async <TResponse>(url: string, params?: Record<string, unknown>) => {
     const idToken = await user?.getIdToken();
+
+    if (!idToken) {
+      return;
+    }
 
     return axios.get<TResponse>(url, {
       params,
