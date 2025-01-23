@@ -15,6 +15,7 @@ const Feed: FC = () => {
   const [rides, setRides] = useState<RideType[]>([]);
   const [afterId, setAfterId] = useState<Nullable<number>>(null);
   const [loading, setLoading] = useState(false);
+  const [doneFetching, setDoneFetching] = useState(false);
   const containerRef = useRef<Nullable<HTMLDivElement>>(null);
 
   const query = useQuery({
@@ -34,8 +35,11 @@ const Feed: FC = () => {
       const { rides: newRides, afterId: newAfterId } = response.data;
 
       setRides((previousRides) => [...previousRides, ...newRides]);
-      if (afterId) {
+      if (newAfterId) {
         setAfterId(newAfterId);
+      }
+      if (newRides.length === 0) {
+        setDoneFetching(false);
       }
       setLoading(false);
     }
@@ -67,7 +71,7 @@ const Feed: FC = () => {
   }, []);
 
   const loadMoreRides = useCallback(() => {
-    if (loading) {
+    if (loading || doneFetching) {
       return;
     }
     setLoading(true);
@@ -76,7 +80,7 @@ const Feed: FC = () => {
     query.refetch({
       queryKey: ['afterId', { afterId }]
     });
-  }, [query, afterId, loading]);
+  }, [query, afterId, loading, doneFetching]);
 
   return (
     <div className="w-full flex items-center justify-center h-screen">

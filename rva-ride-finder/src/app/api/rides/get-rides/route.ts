@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       rides,
-      afterId: rides.sort((a, b) => b.id - a.id)[rides.length - 1]?.id ?? null,
+      afterId: rides[rides.length - 1]?.id ?? null,
     });
   } catch (err) {
     console.log(err);
