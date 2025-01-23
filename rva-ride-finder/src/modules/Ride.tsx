@@ -29,12 +29,12 @@ const Ride: FC<RideProps> = ({ ride }) => {
       </p>
 
       <div className="flex flex-row gap-8">
-        <p className="flex flex-row gap-4">
+        <div className="flex flex-row gap-4">
           <p>
             Difficulty:
           </p>
           <DifficultyIndicator difficulty={difficulty} />
-        </p>
+        </div>
         <p>
           {`Ride type: ${category}`}
         </p>
