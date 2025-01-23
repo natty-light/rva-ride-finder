@@ -16,9 +16,9 @@ const CreateRide: NextPage = () => {
 
   const mutation = useMutation({
     mutationFn: (ride: Omit<Ride, 'userId' | 'id' | 'routeId'>) => {
-      return post(ApiRoutes.CreateRide, ride)
+      return post(ApiRoutes.CreateRide, ride);
     }
-  })
+  });
 
   const handleClick = useCallback(() => {
     const ride: Omit<Ride, 'userId' | 'id' | 'routeId'> = {
@@ -41,7 +41,7 @@ const CreateRide: NextPage = () => {
       Create Ride
       <button onClick={handleClick}>TEST</button>
     </div>
-  )
-}
+  );
+};
 
 export default CreateRide;
