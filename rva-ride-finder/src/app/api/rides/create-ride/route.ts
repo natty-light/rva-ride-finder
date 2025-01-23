@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   });
 
   if (!dbUser) {
-    return NextResponse.json({ message: 'user not found' }, { status: 404 })
+    return NextResponse.json({ message: 'user not found' }, { status: 404 });
   }
 
   const createResult = await prisma.ride.create({
@@ -37,9 +37,9 @@ export async function POST(req: Request) {
         }
       },
     }
-  })
+  });
 
-  console.log(`created ride with id ${createResult.id}`)
+  console.log(`created ride with id ${createResult.id}`);
 
-  return NextResponse.json({ message: 'created' }, { status: 201 })
+  return NextResponse.json({ message: 'created' }, { status: 201 });
 }

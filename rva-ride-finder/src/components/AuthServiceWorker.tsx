@@ -16,16 +16,16 @@ const AuthServiceWorker: FC = () => {
 
   const mutation = useMutation({
     mutationFn: (req: { uid: string }) => {
-      return post(ApiRoutes.RegisterUser, req)
+      return post(ApiRoutes.RegisterUser, req);
     }
-  })
+  });
 
   const router = useRouter();
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       const serializedFirebaseConfig = encodeURIComponent(JSON.stringify(firebaseConfig));
-      const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`
+      const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`;
 
       navigator.serviceWorker
         .register(serviceWorkerUrl)
@@ -35,31 +35,31 @@ const AuthServiceWorker: FC = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((authUser) => {
-      setUser(authUser)
-    })
+      setUser(authUser);
+    });
 
-    return () => unsubscribe()
+    return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     onAuthStateChanged((authUser) => {
       if (!user) {
-        return
+        return;
       }
 
-      mutation.mutate({ uid: user.uid })
+      mutation.mutate({ uid: user.uid });
 
       // refresh when user changed to ease testing
       if (user?.email !== authUser?.email) {
         router.refresh();
       }
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [user]);
 
 
   return null;
-}
+};
 
 export default AuthServiceWorker;

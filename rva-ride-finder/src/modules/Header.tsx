@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import useUserSession from "@/hooks/useUserSession";
 import { signInWithGoogle, signOut } from "@/lib/firebase/auth";
 import { useAuthStore } from "@/stores/auth";
@@ -57,6 +57,6 @@ const Header: FC<HeaderProps> = ({ initialUser }) => {
       </div>
     </header >
   );
-}
+};
 
 export default Header;

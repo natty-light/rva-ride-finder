@@ -2,7 +2,7 @@ import Header from "@/modules/Header";
 import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import { ReactNode } from "react";
 
-import '@/styles/globals.css'
+import '@/styles/globals.css';
 import GlobalWrapper from "@/modules/GlobalWrapper";
 
 export default async function RootLayout({ children }: { children: ReactNode }) {

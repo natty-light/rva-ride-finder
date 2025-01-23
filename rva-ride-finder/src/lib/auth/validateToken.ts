@@ -17,6 +17,6 @@ const validateToken = async (req: Request): Promise<boolean> => {
   }
 
   return true;
-}
+};
 
 export default validateToken;

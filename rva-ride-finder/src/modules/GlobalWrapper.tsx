@@ -16,7 +16,7 @@ const GlobalWrapper: FC<GlobalWrapperProps> = ({ children }) => {
       <AuthServiceWorker />
       {children}
     </QueryClientProvider>
-  )
-}
+  );
+};
 
 export default GlobalWrapper;

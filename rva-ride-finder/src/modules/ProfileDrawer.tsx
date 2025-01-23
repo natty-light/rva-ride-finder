@@ -20,7 +20,7 @@ const ProfileDrawer: FC<ProfileDrawerProps> = ({ handleSignOut, onClose, isOpen 
         </a>
       </div>
     </Drawer>
-  )
-}
+  );
+};
 
 export default ProfileDrawer;

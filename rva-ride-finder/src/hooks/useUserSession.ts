@@ -16,7 +16,7 @@ const useUserSession = (initialUser: Nullable<User>) => {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       const serializedFirebaseConfig = encodeURIComponent(JSON.stringify(firebaseConfig));
-      const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`
+      const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`;
 
       navigator.serviceWorker
         .register(serviceWorkerUrl)
@@ -26,25 +26,25 @@ const useUserSession = (initialUser: Nullable<User>) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((authUser) => {
-      setUser(authUser)
-    })
+      setUser(authUser);
+    });
 
-    return () => unsubscribe()
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     onAuthStateChanged((authUser) => {
       if (!user) {
-        return
+        return;
       }
 
       // refresh when user changed to ease testing
       if (user?.email !== authUser?.email) {
-        router.refresh()
+        router.refresh();
       }
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
-}
+  }, [user]);
+};
 
 export default useUserSession; 

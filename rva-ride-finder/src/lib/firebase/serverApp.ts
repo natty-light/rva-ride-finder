@@ -23,4 +23,4 @@ export const getAuthenticatedAppForUser = async () => {
   await auth.authStateReady();
 
   return { firebaseServerApp, currentUser: auth.currentUser };
-}
+};

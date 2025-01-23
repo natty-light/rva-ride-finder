@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <Feed />
       <CreateRideButton />
     </div>
-  )
-}
+  );
+};
 
 export default Home;
