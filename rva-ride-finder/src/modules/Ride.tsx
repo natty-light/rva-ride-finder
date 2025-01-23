@@ -1,5 +1,7 @@
-import type { RideType } from "@/types/ride";
-import { format, parseISO } from "date-fns";
+import Checkbox from "@/components/Checkbox";
+import DifficultyIndicator from "@/components/DifficultyIndicator";
+import { Ride as RideType } from "@prisma/client";
+import { format } from "date-fns";
 import type { FC } from "react";
 
 type RideProps = {
@@ -7,11 +9,10 @@ type RideProps = {
 }
 
 const Ride: FC<RideProps> = ({ ride }) => {
+  const { distance, startDate, title, host, category, description, difficulty, isDrop } = ride;
 
-  const { distance, startDate, title, host } = ride;
-
-  const getFormattedStartString = (start: string) => {
-    const parsed = parseISO(start);
+  const getFormattedStartString = (start: Date) => {
+    const parsed = new Date(start);
     return `Starts: ${format(parsed, 'MM-dd-yyyy')} @ ${format(parsed, 'hh:mm a')}`;
   };
 
@@ -26,8 +27,29 @@ const Ride: FC<RideProps> = ({ ride }) => {
       <p>
         {getFormattedStartString(startDate)}
       </p>
+
+      <div className="flex flex-row gap-8">
+        <p className="flex flex-row gap-4">
+          <p>
+            Difficulty:
+          </p>
+          <DifficultyIndicator difficulty={difficulty} />
+        </p>
+        <p>
+          {`Ride type: ${category}`}
+        </p>
+        <p>
+          {`Distance: ${distance} mi`}
+        </p>
+        <div className="flex flex-row gap-2 items-center">
+          <p>
+            Drop ride?
+          </p>
+          <Checkbox checked={isDrop} />
+        </div>
+      </div>
       <p>
-        {`Distance: ${distance} mi`}
+        {description}
       </p>
     </div>
   );
