@@ -13,8 +13,6 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose, position = "left", children 
       ? ` ${isOpen ? "translate-x-0" : "-translate-x-full"}`
       : ` ${isOpen ? "translate-x-0" : "translate-x-full"}`;
 
-  useEffect(() => console.log(translateClass), [translateClass]);
-
   return (
     <>
       {/* Overlay */}
