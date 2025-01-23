@@ -19,8 +19,8 @@ model Ride {
   isDrop      Boolean          @default(false)
   user        User             @relation(fields: [userId], references: [id])
   userId      Int
-  route       Route            @relation(fields: [routeId], references: [id])
-  routeId     Int
+  route       Route?           @relation(fields: [routeId], references: [id])
+  routeId     Int?
 }
 
 enum RideCategories {
