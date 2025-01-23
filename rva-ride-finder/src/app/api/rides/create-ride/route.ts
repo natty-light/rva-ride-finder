@@ -2,6 +2,7 @@ import prisma from "@/db/datasource";
 import validateToken from "@/lib/auth/validateToken";
 import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import type { Ride } from "@prisma/client";
+import { parse } from "date-fns";
 import { NextResponse } from "next/server";
 
 type CreateRideRequest = Omit<Ride, 'id' | 'userId' | 'routeId'>
@@ -15,6 +16,8 @@ export async function POST(req: Request) {
   }
 
   const body = (await req.json()) as CreateRideRequest;
+  const { startDate } = body;
+  body.startDate = new Date(startDate);
 
   const { currentUser } = await getAuthenticatedAppForUser();
 
