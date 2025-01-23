@@ -1,9 +1,9 @@
 'use client';
+import useFetchers from "@/hooks/useFetchers";
 import { onAuthStateChanged } from "@/lib/firebase/auth";
 import { firebaseConfig } from "@/lib/firebase/config";
 import { ApiRoutes } from "@/routes";
 import { useAuthStore } from "@/stores/auth";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { type FC, useEffect } from "react";
 import { useMutation } from "react-query";
@@ -12,9 +12,11 @@ const AuthServiceWorker: FC = () => {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
 
+  const { post } = useFetchers();
+
   const mutation = useMutation({
     mutationFn: (req: { uid: string }) => {
-      return axios.post(ApiRoutes.RegisterUser, req)
+      return post(ApiRoutes.RegisterUser, req)
     }
   })
 

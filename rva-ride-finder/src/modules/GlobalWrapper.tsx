@@ -1,7 +1,7 @@
 'use client';
 
 import AuthServiceWorker from "@/components/AuthServiceWorker";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 type GlobalWrapperProps = {
