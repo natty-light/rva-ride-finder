@@ -1,6 +1,5 @@
 import prisma from "@/db/datasource";
-import { adminAuth } from "@/lib/firebase/admin";
-import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
+import validateToken from "@/lib/auth/validateToken";
 import { NextResponse } from "next/server";
 
 type RegisterUserRequest = {
@@ -8,21 +7,10 @@ type RegisterUserRequest = {
 }
 
 export async function POST(req: Request) {
-
-  const idToken = req.headers.get('Authorization')?.split('Bearer')[1].trim()
-
-  if (!idToken) {
+  const validationResult = await validateToken(req);
+  if (!validationResult) {
     return NextResponse.json({ message: 'unauthorized' }, { status: 401 })
   }
-
-  const { currentUser } = await getAuthenticatedAppForUser();
-
-  const decodedToken = await adminAuth.verifyIdToken(idToken)
-
-  if (currentUser?.uid !== decodedToken.uid) {
-    return NextResponse.json({ message: 'unauthorized ' }, { status: 401 })
-  }
-
 
   try {
     const { uid } = (await req.json()) as RegisterUserRequest;
