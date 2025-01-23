@@ -41,5 +41,5 @@ export async function POST(req: Request) {
 
   console.log(`created ride with id ${createResult.id}`);
 
-  return NextResponse.json({ message: 'created' }, { status: 201 });
+  return NextResponse.json({ id: createResult.id }, { status: 201 });
 }
