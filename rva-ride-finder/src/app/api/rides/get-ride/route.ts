@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'no ride found' }, { status: 404 });
     }
 
-    return NextResponse.json({ ride }, { status: 200 });
+    return NextResponse.json(ride, { status: 200 });
   } catch (err) {
     return NextResponse.json({ message: (err as Error).message }, { status: 500 });
   }
